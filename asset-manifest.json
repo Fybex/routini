@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/routini/static/css/main.4fed3d51.chunk.css",
-    "main.js": "/routini/static/js/main.8c72a66d.chunk.js",
-    "main.js.map": "/routini/static/js/main.8c72a66d.chunk.js.map",
+    "main.css": "/routini/static/css/main.8fae9c46.chunk.css",
+    "main.js": "/routini/static/js/main.3ef8d952.chunk.js",
+    "main.js.map": "/routini/static/js/main.3ef8d952.chunk.js.map",
     "runtime-main.js": "/routini/static/js/runtime-main.0ec7e00a.js",
     "runtime-main.js.map": "/routini/static/js/runtime-main.0ec7e00a.js.map",
-    "static/js/2.b5687ef3.chunk.js": "/routini/static/js/2.b5687ef3.chunk.js",
-    "static/js/2.b5687ef3.chunk.js.map": "/routini/static/js/2.b5687ef3.chunk.js.map",
+    "static/js/2.c3afce78.chunk.js": "/routini/static/js/2.c3afce78.chunk.js",
+    "static/js/2.c3afce78.chunk.js.map": "/routini/static/js/2.c3afce78.chunk.js.map",
     "index.html": "/routini/index.html",
-    "static/css/main.4fed3d51.chunk.css.map": "/routini/static/css/main.4fed3d51.chunk.css.map",
-    "static/js/2.b5687ef3.chunk.js.LICENSE.txt": "/routini/static/js/2.b5687ef3.chunk.js.LICENSE.txt"
+    "static/css/main.8fae9c46.chunk.css.map": "/routini/static/css/main.8fae9c46.chunk.css.map",
+    "static/js/2.c3afce78.chunk.js.LICENSE.txt": "/routini/static/js/2.c3afce78.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.0ec7e00a.js",
-    "static/js/2.b5687ef3.chunk.js",
-    "static/css/main.4fed3d51.chunk.css",
-    "static/js/main.8c72a66d.chunk.js"
+    "static/js/2.c3afce78.chunk.js",
+    "static/css/main.8fae9c46.chunk.css",
+    "static/js/main.3ef8d952.chunk.js"
   ]
 }
