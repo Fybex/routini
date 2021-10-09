@@ -1,0 +1,8 @@
+.ProseMirror {
+    outline: none;
+}
+
+.Title {
+    font-size: 32px;
+    font-weight: bold;
+}
