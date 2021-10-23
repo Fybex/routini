@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import { Drawer, Box, CssBaseline, Typography, Button, AppBar, Toolbar, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { styled, useTheme, createTheme, ThemeProvider, alpha } from '@mui/material/styles';
+import { Drawer, Box, AppBar, Toolbar, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import TreeItem from '@mui/lab/TreeItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import MailIcon from '@mui/icons-material/Mail';
-import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
@@ -58,7 +56,7 @@ const Sidebar = ({ folders, setActiveFile, open, handleDrawerOpen, handleDrawerC
         const { id, title } = folder;
         return (
             <Box>
-                <StyledTreeItem sx={{ p: 0.5 }} nodeId={`${id}`} label={title} onClick={() => setActiveFile(id)} />
+                <StyledTreeItem sx={{ p: 0.5 }} nodeId={`${id}`} label={title} onClick={() => console.log('test')} onAddPaper={onAddPaper} />
             </Box>
         )
     })

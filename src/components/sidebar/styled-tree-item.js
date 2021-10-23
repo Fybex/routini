@@ -42,6 +42,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
         icon: iconProp,
         expansionIcon,
         displayIcon,
+        onAddPaper
     } = props;
 
     const {
@@ -96,7 +97,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
             </Typography>
             {show && (
                 <Box sx={{ display: 'block' }} >
-                    <IconButton size="small">
+                    <IconButton size="small" >
                         <AddIcon />
                     </IconButton>
                 </Box>
