@@ -44,7 +44,6 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
         icon: iconProp,
         expansionIcon,
         displayIcon,
-        key,
         addPaper,
         deletePaper,
     } = props;
@@ -116,7 +115,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
 });
 
 const StyledTreeItem = (props) => {
-    return (<StyledTreeItemRoot ContentComponent={CustomContent} ContentProps={{ addPaper: props.addPaper, deletePaper: props.deletePaper }} {...props} />);
+    return (<StyledTreeItemRoot ContentComponent={CustomContent} {...props} />);
 }
 
 

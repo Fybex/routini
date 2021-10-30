@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Drawer, Box, AppBar, Toolbar, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { Drawer, Box, AppBar, Toolbar, IconButton } from '@mui/material';
+import { styled, useTheme, alpha } from '@mui/material/styles';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -17,10 +17,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import InputBase from '@mui/material/InputBase';
 
 import StyledTreeItem from './styled-tree-item';
 
@@ -34,6 +33,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
+
+const Search = styled('div')(({ theme }) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  }));
 
 const StyledAppBar = styled(AppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -50,6 +64,33 @@ const StyledAppBar = styled(AppBar, {
             duration: theme.transitions.duration.enteringScreen,
         }),
     }),
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
+        },
+    },
 }));
 
 const Sidebar = ({ papers, addPaper, deletePaper, setActiveFile, open, handleDrawerOpen, handleDrawerClose }) => {
@@ -77,13 +118,11 @@ const Sidebar = ({ papers, addPaper, deletePaper, setActiveFile, open, handleDra
                     key={id}
                     nodeId={`${id}`}
                     label={treeItemData.title}
-                    setActiveFile={() => setActiveFile(id)}
-                    addPaper={() => addPaper(treeItemData.id)}
-                    deletePaper={() => {
+                    ContentProps={{ addPaper: () => addPaper(treeItemData.id), deletePaper: () => {
                         setLastClickedDelete(id)
                         handleClickOpen();
                         // deletePaper(treeItemData.id)
-                    }}
+                    } }}
                 >
                     {treeItemData.children && treeItemData.children.length > 0 ?
                         elements(treeItemData.children) : null}
@@ -214,9 +253,15 @@ const Sidebar = ({ papers, addPaper, deletePaper, setActiveFile, open, handleDra
                     </Typography> */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton size="large" color="inherit">
-                            <SearchIcon />
-                        </IconButton>
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Search>
                         <IconButton
                             size="large"
                             aria-label="show 17 new notifications"
@@ -277,7 +322,7 @@ const Sidebar = ({ papers, addPaper, deletePaper, setActiveFile, open, handleDra
                     sx={{ overflowY: 'auto', my: 3 }}
                     onNodeSelect={(event, nodeIds) => setActiveFile(parseInt(nodeIds[0], 10))}
                 >
-                        {elements(papers)}
+                    {elements(papers)}
                 </TreeView>
             </Drawer>
             <Dialog
@@ -291,7 +336,7 @@ const Sidebar = ({ papers, addPaper, deletePaper, setActiveFile, open, handleDra
                 </DialogTitle>
                 <DialogActions>
                     <Button onClick={handleClose}>Ні</Button>
-                    <Button onClick={() => {handleClose(); deletePaper(lastClickedDelete)}} autoFocus>
+                    <Button onClick={() => { handleClose(); deletePaper(lastClickedDelete) }} autoFocus>
                         Так
                     </Button>
                 </DialogActions>

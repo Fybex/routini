@@ -4,7 +4,6 @@ import { CssBaseline } from '@mui/material';
 
 import Sidebar from '../sidebar/sidebar';
 import Editor from '../editor/editor';
-import { SignalCellularNull } from '@mui/icons-material';
 
 const App = () => {
     const [papers, setPaper] = useState([

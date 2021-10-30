@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { useEditor, EditorContent } from '@tiptap/react';
-import { Node } from "@tiptap/core";
 import Document from '@tiptap/extension-document';
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder';
-import ContentEditable from 'react-contenteditable';
-
 
 import './editor.css';
 import { Toolbar, Typography } from '@mui/material';
@@ -71,7 +68,7 @@ const Editor = ({ getActiveFile, onUpdateNote, open }) => {
                 }
             }
         }
-    }, [getActiveFile]);
+    }, [getActiveFile, editor, id]);
 
     const check = getActiveFile ? (
         <>
