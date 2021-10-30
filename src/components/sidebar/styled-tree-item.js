@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TreeItem, { treeItemClasses, useTreeItem } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
@@ -27,6 +28,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     },
     [`& .${treeItemClasses.group}`]: {
         marginLeft: 0,
+
         [`& .${treeItemClasses.content}`]: {
             paddingLeft: theme.spacing(4),
         },
@@ -42,7 +44,9 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
         icon: iconProp,
         expansionIcon,
         displayIcon,
-        onAddPaper
+        key,
+        addPaper,
+        deletePaper,
     } = props;
 
     const {
@@ -63,6 +67,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
 
     const handleExpansionClick = (event) => {
         handleExpansion(event);
+
     };
 
     const handleSelectionClick = (event) => {
@@ -92,12 +97,16 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
                     {icon}
                 </IconButton>
             </div>
-            <Typography onClick={handleSelectionClick} variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
+            <Typography onClick={handleSelectionClick} variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 1, py: 2 }}>
                 {label}
             </Typography>
             {show && (
                 <Box sx={{ display: 'block' }} >
-                    <IconButton size="small" >
+                    {nodeId !== '1' ? (<IconButton size="small" onClick={deletePaper} >
+                        <DeleteIcon />
+                    </IconButton>) : null}
+                    
+                    <IconButton size="small" onClick={addPaper} >
                         <AddIcon />
                     </IconButton>
                 </Box>
@@ -107,7 +116,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
 });
 
 const StyledTreeItem = (props) => {
-    return (<StyledTreeItemRoot ContentComponent={CustomContent} {...props} />);
+    return (<StyledTreeItemRoot ContentComponent={CustomContent} ContentProps={{ addPaper: props.addPaper, deletePaper: props.deletePaper }} {...props} />);
 }
 
 

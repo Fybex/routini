@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Drawer, Box, AppBar, Toolbar, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -15,6 +15,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 import StyledTreeItem from './styled-tree-item';
 
@@ -46,20 +52,46 @@ const StyledAppBar = styled(AppBar, {
     }),
 }));
 
-
-
-
-const Sidebar = ({ folders, setActiveFile, open, handleDrawerOpen, handleDrawerClose, onAddPaper }) => {
+const Sidebar = ({ papers, addPaper, deletePaper, setActiveFile, open, handleDrawerOpen, handleDrawerClose }) => {
     const theme = useTheme();
+    const [openDialog, setOpenDialog] = useState(false);
 
-    const elements = folders.map(folder => {
-        const { id, title } = folder;
-        return (
-            <Box>
-                <StyledTreeItem sx={{ p: 0.5 }} nodeId={`${id}`} label={title} onClick={() => console.log('test')} onAddPaper={onAddPaper} />
-            </Box>
-        )
-    })
+    const handleClickOpen = () => {
+        setOpenDialog(true);
+    };
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
+
+    const [lastClickedDelete, setLastClickedDelete] = useState(false)
+
+    const elements = (treeItems) => {
+
+        return treeItems.map(treeItemData => {
+            const { id, ...itemProps } = treeItemData;
+
+            return (
+                <StyledTreeItem
+                    {...itemProps}
+                    key={id}
+                    nodeId={`${id}`}
+                    label={treeItemData.title}
+                    setActiveFile={() => setActiveFile(id)}
+                    addPaper={() => addPaper(treeItemData.id)}
+                    deletePaper={() => {
+                        setLastClickedDelete(id)
+                        handleClickOpen();
+                        // deletePaper(treeItemData.id)
+                    }}
+                >
+                    {treeItemData.children && treeItemData.children.length > 0 ?
+                        elements(treeItemData.children) : null}
+                </StyledTreeItem>
+            );
+        });
+    };
+
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -243,12 +275,27 @@ const Sidebar = ({ folders, setActiveFile, open, handleDrawerOpen, handleDrawerC
                     defaultExpandIcon={<ChevronRightIcon />}
                     multiSelect
                     sx={{ overflowY: 'auto', my: 3 }}
+                    onNodeSelect={(event, nodeIds) => setActiveFile(parseInt(nodeIds[0], 10))}
                 >
-                    <StyledTreeItem nodeId="1" label="Замітки">
-                        {elements}
-                    </StyledTreeItem>
+                        {elements(papers)}
                 </TreeView>
             </Drawer>
+            <Dialog
+                open={openDialog}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Ви впевнені, що хочете видалити файл?
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose}>Ні</Button>
+                    <Button onClick={() => {handleClose(); deletePaper(lastClickedDelete)}} autoFocus>
+                        Так
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

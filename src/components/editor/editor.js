@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { Node } from "@tiptap/core";
-import StarterKit from '@tiptap/starter-kit';
+import Document from '@tiptap/extension-document';
+import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder';
 import ContentEditable from 'react-contenteditable';
 
@@ -32,31 +33,57 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
 );
 
-const Editor = ({ activeFile, onUpdateNote, open }) => {
-    const data = activeFile.text;
+const CustomDocument = Document.extend({
+    content: 'heading block*',
+})
 
-    const tiptap = useEditor({
+const Editor = ({ getActiveFile, onUpdateNote, open }) => {
+    const [id, setId] = useState();
+
+    const editor = useEditor({
         extensions: [
-            StarterKit,
-            Placeholder,
+            CustomDocument,
+            StarterKit.configure({
+                document: false,
+            }),
+            Placeholder.configure({
+                placeholder: ({ node }) => {
+                    if (node.type.name === 'heading') {
+                        return 'What’s the title?'
+                    }
+
+                    return 'Can you add some further context?'
+                },
+            }),
         ],
-        content: data,
-    });
+        content: getActiveFile.text,
+    })
 
-    if (activeFile) {
-        tiptap.on('blur', () => onUpdateNote({
-            ...activeFile,
-            text: tiptap.getHTML(),
-        }))
-    };
+    useEffect(() => {
+        if (getActiveFile) {
+            if (getActiveFile.id !== id) {
+                setId(getActiveFile.id);
+                console.log(getActiveFile.id);
+                try {
+                    editor.commands.setContent(getActiveFile.text);
+                } catch (e) {
+                    return;
+                }
+            }
+        }
+    }, [getActiveFile]);
 
-    const check = activeFile ? (
+    const check = getActiveFile ? (
         <>
-            <Main open={open} sx={{ py: 12, px: 8, width: '100%' }} className='editarea'><Toolbar /><ContentEditable className='ProseMirror Title' html={activeFile.title} onChange={(e) => onUpdateNote({
-                ...activeFile,
+            <Main open={open} sx={{ py: 12, px: 8, width: '100%' }} className='editarea'><Toolbar />
+                {/* <ContentEditable className='ProseMirror Title' html={getActiveFile.title} onChange={(e) => onUpdateNote({
+                ...getActiveFile,
                 title: e.target.value
-            })} />
-            <EditorContent editor={tiptap} /></Main></>
+            })} /> */}
+                <EditorContent editor={editor} onBlur={() => onUpdateNote({
+                ...getActiveFile,
+                text: editor.getJSON(),
+            })} /></Main></>
     ) : (
         <>
             <Box position='absolute' display='flex' justifyContent='center' alignItems='center' height='80vh' width='100%'>
@@ -65,21 +92,11 @@ const Editor = ({ activeFile, onUpdateNote, open }) => {
             </Box>
         </>);
 
-    useEffect(() => {
-        if (activeFile) {
-            try {
-                tiptap.commands.setContent(data);
-            } catch (e) {
-                return;
-            }
-        }
-    }, [activeFile]);
+
 
     return (
         <>
-            
-                
-                {check}
+            {check}
         </>
     )
 }
