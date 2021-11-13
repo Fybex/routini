@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, forwardRef } from 'react';
 import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -74,11 +74,6 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
     };
 
     const [mouse, setMouse] = useState(false);
-    const [show, setShow] = useState(false);
-
-    useEffect(() => {
-        mouse ? setShow(true) : setShow(false);
-    }, [mouse]);
 
     return (
         <Box
@@ -90,7 +85,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
             })}
             onMouseDown={handleMouseDown}
             ref={ref}
-            onMouseOver={() => setMouse(true)} onMouseOut={() => setMouse(false)} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}  >
+            onMouseEnter={() => setMouse(true)} onMouseLeave={() => setMouse(false)} sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}  >
             <div onClick={handleExpansionClick}>
                 <IconButton size="small" >
                     {icon}
@@ -99,7 +94,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
             <Typography onClick={handleSelectionClick} variant="body1" sx={{ fontWeight: 'inherit', flexGrow: 1, py: 2 }}>
                 {label}
             </Typography>
-            {show && (
+            {mouse && (
                 <Box sx={{ display: 'block' }} >
                     {nodeId !== '1' ? (<IconButton size="small" onClick={deletePaper} >
                         <DeleteIcon />

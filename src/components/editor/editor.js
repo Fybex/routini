@@ -34,6 +34,8 @@ const CustomDocument = Document.extend({
     content: 'heading block*',
 })
 
+
+
 const Editor = ({ getActiveFile, onUpdateNote, open }) => {
     const [id, setId] = useState();
 
@@ -54,13 +56,22 @@ const Editor = ({ getActiveFile, onUpdateNote, open }) => {
             }),
         ],
         content: getActiveFile.text,
+        // onTransaction: ({ state }) => {
+        //     console.log(state.selection.anchor)
+        // },
     })
+
+    // if(editor) {
+    //     editor.on('transaction', ({ editor, transaction }) => {
+    //         console.log(transaction)
+    //     })
+    // }
+    
 
     useEffect(() => {
         if (getActiveFile) {
             if (getActiveFile.id !== id) {
                 setId(getActiveFile.id);
-                console.log(getActiveFile.id);
                 try {
                     editor.commands.setContent(getActiveFile.text);
                 } catch (e) {
@@ -77,10 +88,16 @@ const Editor = ({ getActiveFile, onUpdateNote, open }) => {
                 ...getActiveFile,
                 title: e.target.value
             })} /> */}
-                <EditorContent editor={editor} onBlur={() => onUpdateNote({
-                ...getActiveFile,
-                text: editor.getJSON(),
-            })} /></Main></>
+                <EditorContent 
+                    editor={editor} 
+                    onBlur={() => onUpdateNote({
+                        ...getActiveFile,
+                        text: editor.getHTML(),
+                        rawText: editor.getText()
+                    })}
+                />
+            </Main>
+        </>
     ) : (
         <>
             <Box position='absolute' display='flex' justifyContent='center' alignItems='center' height='80vh' width='100%'>
@@ -88,9 +105,9 @@ const Editor = ({ getActiveFile, onUpdateNote, open }) => {
                 <Typography variant='h4' align='center' fontWeight='bold' >Немає відкритих файлів</Typography>
             </Box>
         </>);
-
-
-
+    console.log(editor)
+    if(editor) {console.log(editor.commandManager.editor.options.element.firstChild.firstChild.innerText)}
+    
     return (
         <>
             {check}

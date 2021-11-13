@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
 
@@ -6,43 +6,20 @@ import Sidebar from '../sidebar/sidebar';
 import Editor from '../editor/editor';
 
 const App = () => {
-    const [papers, setPaper] = useState([
+    const [papers, setPaper] = useState(localStorage.papers ? JSON.parse(localStorage.papers) : [
         {
             id: 1,
             title: 'Замітки',
             children: [
                 {
                     id: 2, title: 'Школа',
+                    text: '<p>Школа</p>',
+                    rawText: 'Школа',
                     children: [
-                        { id: 3, title: 'Алгебра', text: '<p>Алгебра</p>' },
-                        { id: 4, title: 'Геометрія', text: '<p>Геометрія</p>' }
+                        { id: 3, title: 'Алгебра', text: '<p>Алгебра</p><p>Теоре́ма Віє́та — формули, названі на честь Франсуа Вієта, що виражають коефіцієнти многочлена через його корені.</p>', rawText: 'Алгебра\n\nТеоре́ма Віє́та — формули, названі на честь Франсуа Вієта, що виражають коефіцієнти многочлена через його корені.' },
+                        { id: 4, title: 'Геометрія', text: '<p>Геометрія</p><p>Теоре́ма Піфаго́ра (Пітаго́ра[1]) — одна із засадничих теорем евклідової геометрії, яка встановлює співвідношення між сторонами прямокутного трикутника. Уважається, що її довів грецький математик Піфагор, на чию честь її й названо (є й інші версії, зокрема думка, що цю теорему в загальному вигляді було сформульовано математиком-піфагорійцем Гіппасом).</p>', rawText: 'Геометрія\n\nТеоре́ма Піфаго́ра (Пітаго́ра[1]) — одна із засадничих теорем евклідової геометрії, яка встановлює співвідношення між сторонами прямокутного трикутника. Уважається, що її довів грецький математик Піфагор, на чию честь її й названо (є й інші версії, зокрема думка, що цю теорему в загальному вигляді було сформульовано математиком-піфагорійцем Гіппасом).', }
                     ],
-                    text: {
-                        "type": "doc",
-                        "content": [
-                            {
-                                "type": "heading",
-                                "attrs": {
-                                    "level": 1
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "Hello"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "paragraph",
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "it`s a test"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
+
                 },
             ]
         }
@@ -50,10 +27,9 @@ const App = () => {
 
     ]);
 
-
     const [paperId, setPaperId] = useState(5);
 
-    const [activeFile, setActiveFile] = useState(1);
+    const [activeFile, setActiveFile] = useState(localStorage.activeFile ? JSON.parse(localStorage.activeFile) : 1);
     const [open, setOpen] = useState(true);
 
     const handleDrawerOpen = () => {
@@ -65,14 +41,12 @@ const App = () => {
     };
 
     const getActiveFile = (data, id = activeFile) => {
-        console.log(data)
         let check = false
         if (Array.isArray(data)) {
             data.forEach(dataItem => {
                 if (dataItem.id === id) {
                     check = dataItem
                 } else if (dataItem.children) {
-                    console.log(id)
                     check = getActiveFile(dataItem.children, id);
                 }
             })
@@ -86,6 +60,7 @@ const App = () => {
     }
 
     const onUpdateNote = (updatedNote, data = papers) => {
+        console.log(updatedNote.rawText)
         const updatedDataArr = data.map(dataItem => {
             if (dataItem.id === updatedNote.id) {
                 return updatedNote;
@@ -176,21 +151,12 @@ const App = () => {
         } else {
             return updatedDataArr
         }
-
-        // const updatedDataArr = data.map(dataItem => {
-        //     if (dataItem.id === id) {
-        //     } else if (dataItem.children) {
-        //         return {
-        //             ...dataItem,
-        //             children: deletePaper(id, dataItem.children)
-        //         }
-
-        //     } else {
-        //         return dataItem;
-        //     }
-        // });
-
     }
+
+    useEffect(() => {
+        localStorage.setItem("papers", JSON.stringify(papers))
+        localStorage.setItem("activeFile", JSON.stringify(activeFile))
+    }, [papers, activeFile])
 
     return (
         <>
