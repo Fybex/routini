@@ -26,6 +26,8 @@
     "@tiptap/react": "^2.0.0-beta.77",
     "@tiptap/starter-kit": "^2.0.0-beta.140",
     "clsx": "^1.1.1",
+    "immer": "^9.0.6",
+    "nth-check": "^2.0.1",
     "react": "^17.0.2",
     "react-contenteditable": "^3.3.6",
     "react-dom": "^17.0.2",
