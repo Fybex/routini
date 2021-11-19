@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
 
+import Topbar from '../topbar/topbar';
 import Sidebar from '../sidebar/sidebar';
 import Editor from '../editor/editor';
 
@@ -23,35 +24,33 @@ const App = () => {
                 },
             ]
         }
-
-
     ]);
 
-    const [paperId, setPaperId] = useState(5);
-
-    const [activeFile, setActiveFile] = useState(localStorage.activeFile ? JSON.parse(localStorage.activeFile) : 1);
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(localStorage.open ? JSON.parse(localStorage.open) : true);
 
     const handleDrawerOpen = () => {
         setOpen(true);
+        localStorage.setItem("open", JSON.stringify(true))
     };
 
     const handleDrawerClose = () => {
         setOpen(false);
+        localStorage.setItem("open", JSON.stringify(false))
     };
 
-    const getActiveFile = (data, id = activeFile) => {
+    const [activeFile, setActiveFile] = useState(localStorage.activeFile ? JSON.parse(localStorage.activeFile) : 1);
+
+    const getActiveFile = (data = papers, id = activeFile) => {
         let check = false
         if (Array.isArray(data)) {
             data.forEach(dataItem => {
                 if (dataItem.id === id) {
                     check = dataItem
-                } else if (dataItem.children) {
+                } else if (dataItem.children && dataItem.children.length !== 0) {
                     check = getActiveFile(dataItem.children, id);
                 }
             })
         }
-
         if (!check) {
             return false
         } else {
@@ -60,11 +59,10 @@ const App = () => {
     }
 
     const onUpdateNote = (updatedNote, data = papers) => {
-        console.log(updatedNote.rawText)
         const updatedDataArr = data.map(dataItem => {
             if (dataItem.id === updatedNote.id) {
                 return updatedNote;
-            } else if (dataItem.children) {
+            } else if (dataItem.children && dataItem.children.length !== 0) {
                 return {
                     ...dataItem,
                     children: onUpdateNote(updatedNote, dataItem.children)
@@ -75,7 +73,6 @@ const App = () => {
             }
         });
 
-
         if (data === papers) {
             setPaper(updatedDataArr)
         } else {
@@ -83,18 +80,30 @@ const App = () => {
         }
     }
 
+    const [paperId, setPaperId] = useState(localStorage.paperId ? JSON.parse(localStorage.paperId) : 5);
+
+    const [expanded, setExpanded] = useState(localStorage.expanded ? JSON.parse(localStorage.expanded) : []);
+
+    const handleExpandClick = (nodeId) => {
+        const expandArr = expanded.filter(id => id !== nodeId).length === expanded.length ? [...expanded, nodeId] : expanded.filter(id => id !== nodeId)
+
+        setExpanded(expandArr)
+        localStorage.setItem("expanded", JSON.stringify(expandArr))
+    }
+
     const addPaper = (id, data = papers) => {
         const updatedDataArr = data.map(dataItem => {
             if (dataItem.id === id) {
-                if (dataItem.children) {
+                handleExpandClick(`${id}`)
+                if (dataItem.children && dataItem.children.length !== 0) {
                     return {
                         ...dataItem,
                         children: [
                             ...dataItem.children,
                             {
                                 id: paperId,
-                                title: 'Untitled',
-                                text: '<h1>Untitled</h1>'
+                                title: `Untitled ${paperId}`,
+                                text: ''
                             }
                         ]
                     };
@@ -105,13 +114,13 @@ const App = () => {
                             {
                                 id: paperId,
                                 title: `Untitled ${paperId}`,
-                                text: `<h1>Untitled ${paperId}</h1>`
+                                text: ``
                             }
                         ]
                     };
                 }
 
-            } else if (dataItem.children) {
+            } else if (dataItem.children && dataItem.children.length !== 0) {
                 return {
                     ...dataItem,
                     children: addPaper(id, dataItem.children)
@@ -123,7 +132,9 @@ const App = () => {
         });
 
         if (data === papers) {
-            setPaperId(paperId + 1);
+            setActiveFile(paperId)
+            localStorage.setItem("paperId", JSON.stringify(paperId + 1))
+            setPaperId(paperId + 1)
             setPaper(updatedDataArr)
         } else {
             return updatedDataArr
@@ -136,7 +147,7 @@ const App = () => {
         for (let i = 0; i < data.length; i++) {
             if (data[i].id === id) {
 
-            } else if (data[i].children) {
+            } else if (data[i].children && data[i].length !== 0) {
                 updatedDataArr.push({
                     ...data[i],
                     children: deletePaper(id, data[i].children)
@@ -145,13 +156,15 @@ const App = () => {
                 updatedDataArr.push(data[i])
             }
         }
-
         if (data === papers) {
             setPaper(updatedDataArr)
         } else {
             return updatedDataArr
         }
     }
+
+    const defaultDrawerWidth = 240;
+    const [drawerWidth, setDrawerWidth] = useState(localStorage.drawerWidth ? JSON.parse(localStorage.drawerWidth) : defaultDrawerWidth);
 
     useEffect(() => {
         localStorage.setItem("papers", JSON.stringify(papers))
@@ -162,8 +175,29 @@ const App = () => {
         <>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-                <Sidebar papers={papers} setActiveFile={setActiveFile} open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} addPaper={addPaper} deletePaper={deletePaper} />
-                <Editor getActiveFile={getActiveFile(papers)} onUpdateNote={onUpdateNote} open={open} />
+                <Topbar 
+                    papers={papers} 
+                    setActiveFile={setActiveFile} 
+                    handleDrawerOpen={handleDrawerOpen} 
+                />
+                <Sidebar
+                    papers={papers}
+                    setActiveFile={setActiveFile}
+                    open={open}
+                    handleDrawerClose={handleDrawerClose}
+                    addPaper={addPaper}
+                    deletePaper={deletePaper}
+                    drawerWidth={drawerWidth}
+                    setDrawerWidth={setDrawerWidth}
+                    expanded={expanded}
+                    handleExpandClick={handleExpandClick}
+                />
+                <Editor 
+                    getActiveFile={getActiveFile(papers)} 
+                    onUpdateNote={onUpdateNote} 
+                    open={open} 
+                    drawerWidth={drawerWidth} 
+                />
 
             </Box>
         </>

@@ -15,11 +15,12 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
         paddingTop: theme.spacing(0.5),
         paddingBottom: theme.spacing(0.5),
         fontWeight: theme.typography.fontWeightMedium,
+        color: theme.palette.text.main,
         '&:hover': {
             backgroundColor: theme.palette.action.hover,
         },
-        '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
-            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
+        '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused, &:hover.Mui-selected' : {
+            backgroundColor: theme.palette.action.focus
         },
         [`& .${treeItemClasses.label}`]: {
             fontWeight: 'inherit',
@@ -46,6 +47,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
         displayIcon,
         addPaper,
         deletePaper,
+        expand,
     } = props;
 
     const {
@@ -66,7 +68,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
 
     const handleExpansionClick = (event) => {
         handleExpansion(event);
-
+        expand();
     };
 
     const handleSelectionClick = (event) => {
@@ -99,7 +101,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
                     {nodeId !== '1' ? (<IconButton size="small" onClick={deletePaper} >
                         <DeleteIcon />
                     </IconButton>) : null}
-                    
+
                     <IconButton size="small" onClick={addPaper} >
                         <AddIcon />
                     </IconButton>
