@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/components/editor/editor.css"],"names":[],"mappings":"AAAA,aACI,YACJ,CAEA,OACI,cAAe,CACf,eACJ","file":"main.8fae9c46.chunk.css","sourcesContent":[".ProseMirror {\r\n    outline: none;\r\n}\r\n\r\n.Title {\r\n    font-size: 32px;\r\n    font-weight: bold;\r\n}"]}
