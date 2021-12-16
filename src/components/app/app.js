@@ -18,14 +18,14 @@ const AuthenticatedRoute = ({ children }) => {
     const { isAuthenticated } = useAuthState()
     console.log(`AuthenticatedRoute: ${isAuthenticated}`)
 
-    return isAuthenticated ? children : <Navigate to="/routini/login" />
+    return isAuthenticated ? children : <Navigate to="/login" />
 }
 
 const UnauthenticatedRoute = ({ children }) => {
     const { isAuthenticated } = useAuthState()
     console.log(`UnauthenticatedRoute: ${isAuthenticated}`)
 
-    return !isAuthenticated ? children : <Navigate to="/routini" />
+    return !isAuthenticated ? children : <Navigate to="/" />
 
 }
 
@@ -36,8 +36,8 @@ export default function App() {
         <AuthContextProvider>
             <HashRouter>
                 <Box sx={{ display: 'none' }}>
-                    <Link to="/routini">Home</Link> | <Link to="/routini/login">Login</Link> |{' '}
-                    <Link to="/routini/signup">SignUp</Link>
+                    <Link to="/">Home</Link> | <Link to="/login">Login</Link> |{' '}
+                    <Link to="/signup">SignUp</Link>
                 </Box>
                 <Routes>
                     <Route
@@ -50,20 +50,20 @@ export default function App() {
                     >
 
                     </Route>
-                    <Route path="/routini:key" element={
+                    <Route path=":key" element={
                         <AuthenticatedRoute>
                             <Main showEditor={true} />
                         </AuthenticatedRoute>
 
                     } />
-                    <Route path="/routini/tasks" element={
+                    <Route path="tasks" element={
                         <AuthenticatedRoute>
                             <Main showTasks={true} />
                         </AuthenticatedRoute>
 
                     } />
                     <Route
-                        path="/routini/signup"
+                        path="/signup"
                         element={
                             <UnauthenticatedRoute>
                                 <SignUp />
@@ -71,7 +71,7 @@ export default function App() {
                         }
                     />
                     <Route
-                        path="/routini/login"
+                        path="/login"
                         element={
                             <UnauthenticatedRoute >
                                 <SignIn />

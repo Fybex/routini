@@ -40,6 +40,7 @@ export default function TaskItem({ task,
     }
 
     const handleDeleteTask = (e) => {
+
         if(e.key === 'Backspace') {
             if(taskContent) {
                 if(taskContent.length === 0) {
@@ -88,7 +89,7 @@ export default function TaskItem({ task,
             <Box sx={{ display: 'flex' }}>
                 {title && id && 
                 <Box sx={{ mr: 2 }}>
-                    <Link to={`/routini/${id}`} onClick={() => setActiveFile(id)} style={{ color: 'inherit', textDecoration: 'none', textDecorationLine: 'underline' }} >
+                    <Link to={`/${id}`} onClick={() => setActiveFile(id)} style={{ color: 'inherit', textDecoration: 'none', textDecorationLine: 'underline' }} >
                         з файлу {title}
                     </Link>
             </Box>
