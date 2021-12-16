@@ -41,7 +41,7 @@ export default function App() {
                 </Box>
                 <Routes>
                     <Route
-                        path="/"
+                        path="/routini/"
                         element={
                             <AuthenticatedRoute>
                                 <Main />
@@ -50,20 +50,20 @@ export default function App() {
                     >
 
                     </Route>
-                    <Route path=":key" element={
+                    <Route path="/routini/:key" element={
                         <AuthenticatedRoute>
                             <Main showEditor={true} />
                         </AuthenticatedRoute>
 
                     } />
-                    <Route path="tasks" element={
+                    <Route path="/routini/tasks" element={
                         <AuthenticatedRoute>
                             <Main showTasks={true} />
                         </AuthenticatedRoute>
 
                     } />
                     <Route
-                        path="/signup"
+                        path="/routini/signup"
                         element={
                             <UnauthenticatedRoute>
                                 <SignUp />
@@ -71,7 +71,7 @@ export default function App() {
                         }
                     />
                     <Route
-                        path="/login"
+                        path="/routini/login"
                         element={
                             <UnauthenticatedRoute >
                                 <SignIn />
