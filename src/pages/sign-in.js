@@ -3,6 +3,7 @@ import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
@@ -15,7 +16,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="/">
+      <Link color="inherit" to="/">
         routini
       </Link>{' '}
       {new Date().getFullYear()}
@@ -90,18 +91,18 @@ export default function SignIn() {
             >
               Увійти
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
+            <Grid container>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Забули пароль?
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/routini/signup" variant="body2">
                   {"Немає облікового запису? Зареєструватися"}
                 </Link>
               </Grid>
-            </Grid> */}
+            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

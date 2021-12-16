@@ -36,8 +36,8 @@ export default function App() {
         <AuthContextProvider>
             <BrowserRouter>
                 <Box sx={{ display: 'none' }}>
-                    <Link to="/">Home</Link> | <Link to="/login">Login</Link> |{' '}
-                    <Link to="/signup">SignUp</Link>
+                    <Link to="/routini">Home</Link> | <Link to="/routini/login">Login</Link> |{' '}
+                    <Link to="/routini/signup">SignUp</Link>
                 </Box>
                 <Routes>
                     <Route
