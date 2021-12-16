@@ -25,7 +25,7 @@ const UnauthenticatedRoute = ({ children }) => {
     const { isAuthenticated } = useAuthState()
     console.log(`UnauthenticatedRoute: ${isAuthenticated}`)
 
-    return !isAuthenticated ? children : <Navigate to="/" />
+    return !isAuthenticated ? children : <Navigate to="/routini" />
 
 }
 
