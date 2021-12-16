@@ -1,6 +1,6 @@
 import React, { createContext } from 'react'
 import {
-    BrowserRouter,
+    HashRouter,
     Route,
     Routes,
     Navigate,
@@ -34,7 +34,7 @@ export default function App() {
 
     return (
         <AuthContextProvider>
-            <BrowserRouter>
+            <HashRouter>
                 <Box sx={{ display: 'none' }}>
                     <Link to="/">Home</Link> | <Link to="/login">Login</Link> |{' '}
                     <Link to="/signup">SignUp</Link>
@@ -79,7 +79,7 @@ export default function App() {
                         }
                     />
                 </Routes>
-            </BrowserRouter>
+            </HashRouter>
         </AuthContextProvider>
     )
 }
