@@ -18,14 +18,14 @@ const AuthenticatedRoute = ({ children }) => {
     const { isAuthenticated } = useAuthState()
     console.log(`AuthenticatedRoute: ${isAuthenticated}`)
 
-    return isAuthenticated ? children : <Navigate to="/login" />
+    return isAuthenticated ? children : <Navigate to="/routini/login" />
 }
 
 const UnauthenticatedRoute = ({ children }) => {
     const { isAuthenticated } = useAuthState()
     console.log(`UnauthenticatedRoute: ${isAuthenticated}`)
 
-    return !isAuthenticated ? children : <Navigate to="/" />
+    return !isAuthenticated ? children : <Navigate to="/routini" />
 
 }
 
