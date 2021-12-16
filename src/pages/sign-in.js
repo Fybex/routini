@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
 import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
+import Grid from '@mui/material'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
@@ -98,7 +98,7 @@ export default function SignIn() {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link to="/routini/signup" variant="body2">
+                <Link to="/signup" variant="body2">
                   {"Немає облікового запису? Зареєструватися"}
                 </Link>
               </Grid>
