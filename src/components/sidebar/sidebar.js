@@ -7,6 +7,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import StyledTreeItem from './styled-tree-item';
 import DialogComponent from './dialog';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import NotesIcon from '@mui/icons-material/Notes';
 
 const minDrawerWidth = 180;
 const maxDrawerWidth = 500;
@@ -17,7 +19,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
 }));
 
 const DragDiv = styled('div')(({ theme }) => ({
@@ -40,6 +42,7 @@ const Sidebar = ({
         papers, 
         addPaper, 
         deletePaper, 
+        activeFile,
         setActiveFile, 
         open, 
         handleDrawerClose, 
@@ -77,28 +80,31 @@ const Sidebar = ({
     const [lastClickedDelete, setLastClickedDelete] = useState(false)
 
     const elements = (treeItems) => {
-        return treeItems.map(treeItemData => {
+        return treeItems ? treeItems.map(treeItemData => {
             const { id } = treeItemData;
-
+            const icon = treeItemData.id !== 1 ? null : NotesIcon;
             return (
                 <StyledTreeItem
                     key={id}
                     nodeId={`${id}`}
                     label={treeItemData.title}
                     ContentProps={{
+                        activeFile: activeFile,
                         addPaper: () => addPaper(treeItemData.id), 
                         deletePaper: () => {
                             setLastClickedDelete(id)
                             handleClickOpen();
                         },
-                        expand: () => handleExpandClick(`${treeItemData.id}`)
+                        expand: () => handleExpandClick(`${treeItemData.id}`),
+                        labelIcon: icon,
                     }}
                 >
                     {treeItemData.children && treeItemData.children.length !== 0 ?
                         elements(treeItemData.children) : null}
                 </StyledTreeItem>
             );
-        });
+        }) : null
+        
     };
 
 
@@ -110,7 +116,7 @@ const Sidebar = ({
                     flexShrink: 0,
                     transition: "all 0.1s ease-out",
                     userSelect: "none",
-                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', transition: "all 0.05s ease-out" },
+                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', transition: "all 0.1s ease-out" },
                 }}
                 variant="persistent"
                 anchor="left"
@@ -129,8 +135,9 @@ const Sidebar = ({
                     multiSelect
                     expanded={expanded}
                     sx={{ overflowY: 'auto', my: 3 }}
-                    onNodeSelect={(event, nodeIds) => setActiveFile(parseInt(nodeIds[0], 10))}
+                    onNodeSelect={(event, nodeIds) => setActiveFile(nodeIds[0])}
                 >
+                    <StyledTreeItem nodeId="tasks" label="Задачі" ContentProps={{ labelIcon: TaskAltIcon }} />
                     {elements(papers)}
                 </TreeView>
             </Drawer>

@@ -9,8 +9,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchResults from './search-results';
 
 const style = {
-    position: 'absolute',
-    top: '20%',
+    position: 'fixed',
+    top: '30%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
@@ -111,7 +111,7 @@ export default function Search({ papers, search, setSearch, handleSearchOpen, ha
                                     <SearchIcon />
                                 </SearchIconWrapper>
                                 <StyledInputBase
-                                    placeholder="Search…"
+                                    placeholder="Пошук…"
                                     inputProps={{ 'aria-label': 'search' }}
                                     value={searchField}
                                     onChange={(event) => {

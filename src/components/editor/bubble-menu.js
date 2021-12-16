@@ -87,9 +87,9 @@ export default function BubbleMenuComponent({ editor }) {
                         <ToggleButton value="bulletList" selected={editor.isActive('bulletList')} aria-label="bold" onClick={() => editor.chain().focus().toggleBulletList().run()}>
                             <FormatListBulletedIcon />
                         </ToggleButton>
-                        <ToggleButton value="taskList" selected={editor.isActive('taskList')} aria-label="bold" onClick={() => editor.chain().focus().toggleTaskList().run()}>
+                        {/* <ToggleButton value="taskList" selected={editor.isActive('taskList')} aria-label="bold" onClick={() => editor.chain().focus().toggleTaskList().run()}>
                             <DoneIcon />
-                        </ToggleButton>
+                        </ToggleButton> */}
                         <ToggleButton value="blockquote" selected={editor.isActive('blockquote')} aria-label="bold" onClick={() => editor.chain().focus().toggleBlockquote().run()}>
                             <FormatQuoteIcon />
                         </ToggleButton>
