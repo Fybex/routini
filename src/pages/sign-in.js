@@ -98,7 +98,7 @@ export default function SignIn() {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link to="/signup" variant="body2">
+                <Link to="/routini/signup" variant="body2">
                   {"Немає облікового запису? Зареєструватися"}
                 </Link>
               </Grid>

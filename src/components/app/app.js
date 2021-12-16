@@ -36,8 +36,8 @@ export default function App() {
         <AuthContextProvider>
             <HashRouter>
                 <Box sx={{ display: 'none' }}>
-                    <Link to="/">Home</Link> | <Link to="/login">Login</Link> |{' '}
-                    <Link to="/signup">SignUp</Link>
+                    <Link to="/routini">Home</Link> | <Link to="/routini/login">Login</Link> |{' '}
+                    <Link to="/routini/signup">SignUp</Link>
                 </Box>
                 <Routes>
                     <Route
@@ -50,20 +50,20 @@ export default function App() {
                     >
 
                     </Route>
-                    <Route path=":key" element={
+                    <Route path="/routini:key" element={
                         <AuthenticatedRoute>
                             <Main showEditor={true} />
                         </AuthenticatedRoute>
 
                     } />
-                    <Route path="tasks" element={
+                    <Route path="/routini/tasks" element={
                         <AuthenticatedRoute>
                             <Main showTasks={true} />
                         </AuthenticatedRoute>
 
                     } />
                     <Route
-                        path="/signup"
+                        path="/routini/signup"
                         element={
                             <UnauthenticatedRoute>
                                 <SignUp />
@@ -71,7 +71,7 @@ export default function App() {
                         }
                     />
                     <Route
-                        path="/login"
+                        path="/routini/login"
                         element={
                             <UnauthenticatedRoute >
                                 <SignIn />

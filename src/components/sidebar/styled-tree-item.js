@@ -129,7 +129,7 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
                     {icon}
                 </IconButton>
             </div>
-            <Link to={`/${nodeId}`} onClick={handleSelectionClick} style={{ flexGrow: 1, py: 2, display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
+            <Link to={`/routini/${nodeId}`} onClick={handleSelectionClick} style={{ flexGrow: 1, py: 2, display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
                     <Box component={labelIcon} sx={{ mr: 1, color: '#333', height: 60 }} />
                     <Typography variant="body1" >
                         {label}

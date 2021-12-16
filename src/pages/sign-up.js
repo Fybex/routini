@@ -124,7 +124,7 @@ return (
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/login" variant="body2">
+              <Link to="/routini/login" variant="body2">
                 Вже є аккаунт? Заходьте
               </Link>
             </Grid>
