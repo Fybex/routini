@@ -1,20 +1,13 @@
 {
   "files": {
-    "main.css": "/routini/static/css/main.7ea7a5c7.chunk.css",
-    "main.js": "/routini/static/js/main.2a90b2b3.chunk.js",
-    "main.js.map": "/routini/static/js/main.2a90b2b3.chunk.js.map",
-    "runtime-main.js": "/routini/static/js/runtime-main.0ec7e00a.js",
-    "runtime-main.js.map": "/routini/static/js/runtime-main.0ec7e00a.js.map",
-    "static/js/2.434b9050.chunk.js": "/routini/static/js/2.434b9050.chunk.js",
-    "static/js/2.434b9050.chunk.js.map": "/routini/static/js/2.434b9050.chunk.js.map",
+    "main.css": "/routini/static/css/main.30bdab1a.css",
+    "main.js": "/routini/static/js/main.36a7ff0c.js",
     "index.html": "/routini/index.html",
-    "static/css/main.7ea7a5c7.chunk.css.map": "/routini/static/css/main.7ea7a5c7.chunk.css.map",
-    "static/js/2.434b9050.chunk.js.LICENSE.txt": "/routini/static/js/2.434b9050.chunk.js.LICENSE.txt"
+    "main.30bdab1a.css.map": "/routini/static/css/main.30bdab1a.css.map",
+    "main.36a7ff0c.js.map": "/routini/static/js/main.36a7ff0c.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.0ec7e00a.js",
-    "static/js/2.434b9050.chunk.js",
-    "static/css/main.7ea7a5c7.chunk.css",
-    "static/js/main.2a90b2b3.chunk.js"
+    "static/css/main.30bdab1a.css",
+    "static/js/main.36a7ff0c.js"
   ]
 }
