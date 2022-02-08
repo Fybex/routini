@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from '@firebase/auth'
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from "@firebase/firestore"
+import { getFirestore } from '@firebase/firestore'
 import { useState, useEffect, useContext, createContext } from 'react'
 
 export const firebaseApp = initializeApp({
@@ -20,7 +20,8 @@ export const AuthContext = createContext()
 export const AuthContextProvider = props => {
     const [user, setUser] = useState(getAuth().currentUser)
     const [error, setError] = useState()
-    
+
+    getAuth().languageCode = 'uk'
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(getAuth(), setUser, setError)

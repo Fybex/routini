@@ -7,14 +7,16 @@ import CloseIcon from '@mui/icons-material/Close'
 import Topbar from '../components/topbar/topbar'
 import Sidebar from '../components/sidebar/sidebar'
 import Editor from './editor'
-import Tasks from './tasks';
+import Tasks from './tasks'
+import Settings from './settings'
 import { useAuthState } from '../utils/firebase'
-import { doc, setDoc, getDoc } from 'firebase/firestore'
+import { doc, updateDoc, getDoc } from 'firebase/firestore'
 import { db } from '../utils/firebase'
 import uuid from 'react-uuid'
-import useEventListener from '../hooks/event-listener';
+import useEventListener from '../hooks/event-listener'
+import { useTheme } from '@mui/material/styles'
 
-export default function Main({ showEditor = false, showTasks = false }) {
+export default function Main({ showEditor = false, showTasks = false, showSettings = false }) {
     const { user } = useAuthState()
 
     const [papers, setPaper] = useState();
@@ -121,8 +123,8 @@ export default function Main({ showEditor = false, showTasks = false }) {
                             ...dataItem.children,
                             {
                                 id: paperId,
-                                title: `Untitled`,
-                                text: ''
+                                title: 'Untitled',
+                                text: '<p></p>'
                             }
                         ]
                     };
@@ -132,8 +134,8 @@ export default function Main({ showEditor = false, showTasks = false }) {
                         children: [
                             {
                                 id: paperId,
-                                title: `Untitled`,
-                                text: ``
+                                title: 'Untitled',
+                                text: `<p></p>`
                             }
                         ]
                     };
@@ -175,6 +177,7 @@ export default function Main({ showEditor = false, showTasks = false }) {
             }
         }
         if (data === papers) {
+            setTasks(tasks.filter(task => task.fileId !== id))
             setPaper(updatedDataArr)
         } else {
             return updatedDataArr
@@ -203,16 +206,17 @@ export default function Main({ showEditor = false, showTasks = false }) {
 
     const saveData = () => {
         console.log('saving')
-        setDoc(doc(db, `users/${user.uid}`), {
+        updateDoc(doc(db, `users/${user.uid}`), {
             papers: JSON.stringify(papers),
             tasks: JSON.stringify(tasks)
         })
         return false
     }
 
-    const saveHandler = (e) => {
-        if (e.ctrlKey && e.key === 's') {
-            e.preventDefault()
+    const saveHandler = (event) => {
+        if (event.ctrlKey && event.key === 's') {
+            console.log('Save notification')
+            event.preventDefault()
             saveData()
             setSaveNotification(true)
 
@@ -253,7 +257,6 @@ export default function Main({ showEditor = false, showTasks = false }) {
     return (
         <>
             <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
                 <Topbar
                     papers={papers}
                     setActiveFile={setActiveFile}
@@ -263,6 +266,8 @@ export default function Main({ showEditor = false, showTasks = false }) {
                     papers={papers}
                     activeFile={activeFile}
                     setActiveFile={setActiveFile}
+                    getActiveFile={getActiveFile(papers)}
+                    onUpdateNote={onUpdateNote}
                     open={open}
                     handleDrawerClose={handleDrawerClose}
                     addPaper={addPaper}
@@ -289,6 +294,10 @@ export default function Main({ showEditor = false, showTasks = false }) {
                     open={open}
                     getFileId={getFileId}
                     setActiveFile={setActiveFile}
+                />}
+                {showSettings && <Settings
+                    open={open}
+                    drawerWidth={drawerWidth}
                 />}
                 <Snackbar
                     open={saveNotification}

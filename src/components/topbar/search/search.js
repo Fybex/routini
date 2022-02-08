@@ -3,6 +3,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import IconButton from '@mui/material/IconButton';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -56,7 +57,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Search({ papers, search, setSearch, handleSearchOpen, handleSearchClose, setActiveFile }) {
+export default function Search({ papers, setActiveFile }) {
+    const [search, setSearch] = useState(false);
+
+    const handleSearchOpen = () => setSearch(true);
+    const handleSearchClose = () => setSearch(false);
+
     const [searchField, setSearchField] = useState("");
     const [searchShow, setSearchShow] = useState(false);
     const [results, setResults] = useState(false);
@@ -65,15 +71,15 @@ export default function Search({ papers, search, setSearch, handleSearchOpen, ha
         const updatedDataArr = [];
 
         for (let i = 0; i < data.length; i++) {
-            if(data[i].rawText) {
+            if (data[i].rawText) {
                 console.log(data[i])
             }
-            
+
             if (data[i].rawText && data[i].rawText.toLowerCase().includes(searchField)) {
                 updatedDataArr.push({
                     ...data[i],
                     resultIndexStart: data[i].rawText.toLowerCase().indexOf(searchField),
-                    resultIndexEnd: data[i].rawText.toLowerCase().indexOf(searchField)+searchField.length
+                    resultIndexEnd: data[i].rawText.toLowerCase().indexOf(searchField) + searchField.length
                 })
             } else if (data[i].children) {
                 updatedDataArr.push(...filteredResults(data[i].children))
@@ -93,6 +99,13 @@ export default function Search({ papers, search, setSearch, handleSearchOpen, ha
     return (
         <div>
             <div>
+                <IconButton
+                    onClick={handleSearchOpen}
+                    size="large"
+                    color="inherit"
+                >
+                    <SearchIcon />
+                </IconButton>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"

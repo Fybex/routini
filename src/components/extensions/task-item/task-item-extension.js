@@ -1,6 +1,6 @@
 import { Node, mergeAttributes, wrappingInputRule } from '@tiptap/core'
 import { ReactNodeViewRenderer } from '@tiptap/react'
-import Component from './editor-task-item-component'
+import Component from './task-item-component'
 import { Plugin } from 'prosemirror-state'
 import uuid from 'react-uuid'
 
@@ -20,10 +20,13 @@ export default Node.create({
                 default: new Date(),
             },
             content: {
-                default: '',
+                default: null,
+            },
+            priority: {
+                default: 4,
             },
             delete: {
-                default: false,
+                default: null,
             },
             tasks: {
                 default: this.options.tasks
@@ -43,11 +46,49 @@ export default Node.create({
         }
     },
 
-    content() {
-        return 'paragraph+'
+    defining: true,
+    draggable: true,
+
+    addProseMirrorPlugins() {
+        return [
+            new Plugin({
+                appendTransaction: (_transactions, oldState, newState) => {
+                    // no changes
+                    if (newState.doc === oldState.doc) {
+                        return
+                    }
+                    const tr = newState.tr
+
+                    newState.doc.descendants((node, pos, parent) => {
+                        // console.log(parent === newState.doc, !node.attrs.id, node.attrs.id, node.attrs.content, node.type.name)
+                        if (
+                            !node.attrs.id && node.type.name === 'taskItem'
+                        ) {
+                            console.log('descendants', node.attrs.delete)
+                            tr.setNodeMarkup(pos, undefined, {
+                                ...node.attrs,
+                                id: uuid(),
+                            })
+                            console.log('Success ' + tr)
+                        }
+                    })
+
+                    return tr
+                },
+            }),
+        ]
     },
 
-    defining: true,
+    addCommands() {
+        return {
+            setTaskItem: options => ({ commands }) => {
+                return commands.insertContent({
+                    type: this.name,
+                    attrs: options,
+                })
+            },
+        }
+    },
 
     parseHTML() {
         return [
@@ -89,35 +130,6 @@ export default Node.create({
                 getAttributes: match => ({
                     checked: match[match.length - 1] === 'x',
                 }),
-            }),
-        ]
-    },
-
-    addProseMirrorPlugins() {
-        return [
-            new Plugin({
-                appendTransaction: (_transactions, oldState, newState) => {
-                    // no changes
-                    if (newState.doc === oldState.doc) {
-                        return
-                    }
-                    const tr = newState.tr
-
-                    newState.doc.descendants((node, pos, parent) => {
-                        if (
-                            node.isBlock &&
-                            parent === newState.doc &&
-                            !node.attrs.id && node.attrs.content !== 0
-                        ) {
-                            tr.setNodeMarkup(pos, undefined, {
-                                ...node.attrs,
-                                id: uuid(),
-                            })
-                        }
-                    })
-
-                    return tr
-                },
             }),
         ]
     },

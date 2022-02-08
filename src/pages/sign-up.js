@@ -7,9 +7,8 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useCallback } from 'react'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../utils/firebase'
 import { Link } from 'react-router-dom'
@@ -27,18 +26,16 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+export default function SignUp() {
+  const handleSubmit = useCallback(async (event) => {
+    event.preventDefault()
 
-export default function SignUp({ setUserId }) {
-  const handleSubmit = useCallback(async e => {
-    e.preventDefault()
+    const { email, password, firstName, lastName } = event.target.elements
+    const auth = getAuth()  
 
-    const { email, password } = e.target.elements
-    const auth = getAuth()
     try {
       await createUserWithEmailAndPassword(auth, email.value, password.value)
       await setDoc(doc(db, `users/${auth.currentUser.uid}`), {
-        drawerWidth: 240,
         papers: JSON.stringify([{
           id: 1,
           title: 'Замітки',
@@ -46,15 +43,16 @@ export default function SignUp({ setUserId }) {
         }]),
         tasks: JSON.stringify([{}]),
       })
-} catch (e) {
-  alert(e.message)
-}
+      updateProfile(auth.currentUser, {
+        displayName: `${firstName.value} ${lastName.value}`
+      })
+    } catch (event) {
+      alert(event.message)
+    }
   }, [])
 
-return (
-  <ThemeProvider theme={theme}>
+  return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -133,6 +131,5 @@ return (
       </Box>
       <Copyright sx={{ mt: 5 }} />
     </Container>
-  </ThemeProvider>
-);
+  )
 }

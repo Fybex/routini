@@ -5,17 +5,10 @@ import Add from '@mui/icons-material/Add'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Toolbar from '@mui/material/Toolbar'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles'
 import uuid from 'react-uuid'
 import CheckDate from '../utils/check-date'
 
-const theme = createTheme({
-    palette: {
-        button: {
-            main: '#666666',
-        },
-    },
-});
 
 export default function Tasks({
     tasks,
@@ -26,14 +19,17 @@ export default function Tasks({
     getFileId,
     setActiveFile
 }) {
+    const theme = useTheme()
 
     const handleAddTask = () => {
         onUpdateTask({
             checkbox: false,
             id: uuid(),
             content: null,
+            description: null,
             date: null,
             fileId: false,
+            priority: 4,
         })
     }
 
@@ -66,9 +62,10 @@ export default function Tasks({
     const renderedTasks = () => {
         return dates.map(date => {
             if (date) {
-                const tasksElements = tasks.filter(task => task.date !== null).map(
+                const tasksElements = tasks.sort((a, b) => a.priority - b.priority).filter(task => task.date !== null).map(
                     task => {
                         const tranformedDate = CheckDate(task.date)
+
                         if (task.id && date === tranformedDate) {
                             if (task.fileId) {
                                 const { title, id } = getFileId(task.fileId)
@@ -84,7 +81,7 @@ export default function Tasks({
                 )
 
                 return (
-                    <Box>
+                    <Box key={date}>
                         <Typography variant="h6" fontWeight="bold" > {date.charAt(0).toUpperCase() + date.slice(1)}</Typography>
                         {tasksElements}
                     </Box>
@@ -94,7 +91,7 @@ export default function Tasks({
     }
 
     const renderedTasksWithOutDate = () => {
-        const tasksElements = tasks.filter(task => task.date === null).map(
+        const tasksElements = tasks.sort((a, b) => a.priority - b.priority).filter(task => task.date === null).map(
             task => {
                 if (task.id) {
                     if (task.fileId) {
@@ -119,15 +116,13 @@ export default function Tasks({
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box open={open} sx={{ py: 12, px: 24, mr: !open ? `${drawerWidth}px` : '0px', width: '100%' }} className='editarea'><Toolbar />
-                <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }} >Задачі</Typography>
-                {renderedTasks()}
-                {renderedTasksWithOutDate()}
-                <Button onClick={handleAddTask} variant="outlined" startIcon={<Add />} color="button" sx={{ mt: 1.5, textTransform: 'none' }} >
-                    Додати задачу
-                </Button>
-            </Box >
-        </ThemeProvider>
+        <Box open={open} sx={{ py: 12, px: 24, mr: !open ? `${drawerWidth}px` : '0px', width: '100%' }} className='editarea'><Toolbar />
+            <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }} >Задачі</Typography>
+            {renderedTasks()}
+            {renderedTasksWithOutDate()}
+            <Button onClick={handleAddTask} variant="outlined" startIcon={<Add />} color="inherit" sx={{ mt: 1.5, textTransform: 'none' }} >
+                Додати задачу
+            </Button>
+        </Box>
     )
 }

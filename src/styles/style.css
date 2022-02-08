@@ -1,0 +1,95 @@
+.ProseMirror {
+    outline: none;
+}
+
+.datePicker {
+    display: flex;
+    justify-content: center !important;
+}
+
+.Title {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.taskTitle { 
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.ProseMirror .is-empty::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #ced4da;
+    pointer-events: none;
+    height: 0;
+}
+
+blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid #ddd;
+}
+
+ul[data-type="taskList"] {
+    list-style: none;
+    padding: 0;
+}
+
+ul[data-type="taskList"] p {
+    margin: 0;
+}
+
+ul[data-type="taskList"] li {
+    display: flex;
+}
+
+ul[data-type="taskList"] li > label {
+    flex: 0 0 auto;
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+ul[data-type="taskList"] li > div {
+    flex: 1 1 auto;
+}
+
+.taskItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+}
+
+.imageResizeBoxControl.bottomRight {
+    display: inline-block;
+    cursor: e-resize;
+    margin-top: -5px;
+    right: 10px;
+    top: 50%;
+}
+
+.imageResizeBoxControl.bottomLeft {
+    display: inline-block;
+    cursor: w-resize;
+    left: 5px;
+    margin-top: -5px;
+    top: 50%;
+}
+
+.imageResizeBoxControl::after {
+    background-color: black;
+    border-radius: 25px;
+    border: solid 1px white;
+    box-sizing: border-box;
+    content: "";
+    height: 50px;
+    left: 0px;
+    position: absolute;
+    top: -20px;
+    width: 10px;
+}

@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import StyledTreeItem from './styled-tree-item';
-import DialogComponent from './dialog';
+import DialogComponent from '../dialog'
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import NotesIcon from '@mui/icons-material/Notes';
 
@@ -38,22 +38,24 @@ const DragDiv = styled('div')(({ theme }) => ({
     },
 }))
 
-const Sidebar = ({ 
-        papers, 
-        addPaper, 
-        deletePaper, 
-        activeFile,
-        setActiveFile, 
-        open, 
-        handleDrawerClose, 
-        drawerWidth, 
-        setDrawerWidth,
-        expanded,
-        handleExpandClick
-    }) => {
-    const theme = useTheme();
+const Sidebar = ({
+    papers,
+    addPaper,
+    deletePaper,
+    activeFile,
+    setActiveFile,
+    getActiveFile,
+    open,
+    handleDrawerClose,
+    drawerWidth,
+    setDrawerWidth,
+    expanded,
+    handleExpandClick,
+    onUpdateNote
+}) => {
+    const theme = useTheme()
 
-    const handleMouseDown = e => {
+    const handleMouseDown = event => {
         document.addEventListener("mouseup", handleMouseUp, true);
         document.addEventListener("mousemove", handleMouseMove, true);
     };
@@ -63,8 +65,8 @@ const Sidebar = ({
         document.removeEventListener("mousemove", handleMouseMove, true);
     };
 
-    const handleMouseMove = (e => {
-        const newWidth = e.clientX;
+    const handleMouseMove = (event => {
+        const newWidth = event.clientX;
         if (newWidth > minDrawerWidth && newWidth < maxDrawerWidth) {
             setDrawerWidth(newWidth);
             localStorage.setItem("drawerWidth", JSON.stringify(newWidth))
@@ -90,11 +92,13 @@ const Sidebar = ({
                     label={treeItemData.title}
                     ContentProps={{
                         activeFile: activeFile,
-                        addPaper: () => addPaper(treeItemData.id), 
+                        addPaper: () => addPaper(treeItemData.id),
                         deletePaper: () => {
                             setLastClickedDelete(id)
                             handleClickOpen();
                         },
+                        getActiveFile: getActiveFile,
+                        onUpdateNote: onUpdateNote,
                         expand: () => handleExpandClick(`${treeItemData.id}`),
                         labelIcon: icon,
                     }}
@@ -104,9 +108,17 @@ const Sidebar = ({
                 </StyledTreeItem>
             );
         }) : null
-        
+
     };
 
+    const onDialogDeletePaper = () => {
+        setOpenDialog(false)
+        deletePaper(lastClickedDelete)
+    }
+
+    const onDialogClose = () => {
+        setOpenDialog(false)
+    }
 
     return (
         <>
@@ -122,7 +134,7 @@ const Sidebar = ({
                 anchor="left"
                 open={open}
             >
-                <DragDiv onMouseDown={e => handleMouseDown(e)} />
+                <DragDiv onMouseDown={event => handleMouseDown(event)} />
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -142,10 +154,10 @@ const Sidebar = ({
                 </TreeView>
             </Drawer>
             <DialogComponent
-                openDialog={openDialog}
-                setOpenDialog={setOpenDialog}
-                deletePaper={deletePaper}
-                lastClickedDelete={lastClickedDelete}
+                openState={openDialog}
+                onClose={onDialogClose}
+                onSuccessClose={onDialogDeletePaper}
+                message={"Ви впевнені, що хочете видалити файл?"}
             />
         </>
     );

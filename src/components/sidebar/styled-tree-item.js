@@ -1,16 +1,17 @@
-import React, { useState, forwardRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import TreeItem, { treeItemClasses, useTreeItem } from '@mui/lab/TreeItem';
-import Typography from '@mui/material/Typography';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import { useSpring, animated } from 'react-spring';
-import Collapse from '@mui/material/Collapse';
-import { Link } from 'react-router-dom';
+import React, { useState, forwardRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import clsx from 'clsx'
+import { styled } from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import TreeItem, { treeItemClasses, useTreeItem } from '@mui/lab/TreeItem'
+import Typography from '@mui/material/Typography'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import IconButton from '@mui/material/IconButton'
+import { useSpring, animated } from 'react-spring'
+import Collapse from '@mui/material/Collapse'
+import { Link } from 'react-router-dom'
+import TextField from '@mui/material/TextField'
 
 function TransitionComponent(props) {
     const style = useSpring({
@@ -76,7 +77,9 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
         deletePaper,
         expand,
         labelIcon,
-        activeFile
+        activeFile,
+        getActiveFile,
+        onUpdateNote
     } = props;
 
     const {
@@ -104,10 +107,31 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
         handleSelection(event);
     };
 
+    const [isTitleInput, setIsTitleInput] = useState(false)
+    const [titleInput, setTitleInput] = useState()
+
+    const handleInputOn = () => {
+        setIsTitleInput(true)
+        setTitleInput(getActiveFile.title)
+    }
+
+    const handleInputOff = (event) => {
+        setIsTitleInput(false)
+        setTitleInput(event.target.value)
+        onUpdateNote({
+            ...getActiveFile,
+            title: event.target.value
+        })
+    }
+
+    const handleInputChange = (event) => {
+        setTitleInput(event.target.value)
+    }
+
     const [mouse, setMouse] = useState(false);
 
     useEffect(() => {
-        if(activeFile == nodeId) {
+        if (activeFile == nodeId) {
             handleSelectionClick(nodeId);
         }
     }, [activeFile])
@@ -123,21 +147,45 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
             onMouseDown={handleMouseDown}
             ref={ref}
             onMouseEnter={() => setMouse(true)} onMouseLeave={() => setMouse(false)}
-            sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0, }}  >
+            sx={{ display: 'flex', alignItems: 'center', height: 70 }}
+        >
+
             <div onClick={handleExpansionClick}>
                 <IconButton size="small" >
                     {icon}
                 </IconButton>
             </div>
-            <Link to={`/${nodeId}`} onClick={handleSelectionClick} style={{ flexGrow: 1, py: 2, display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
-                    <Box component={labelIcon} sx={{ mr: 1, color: '#333', height: 60 }} />
-                    <Typography variant="body1" >
-                        {label}
-                    </Typography>
-            </Link>
 
-            {mouse && (
-                <Box sx={{ display: 'block' }} >
+            {isTitleInput ?
+                <Box sx={{ mr: 1 }}>
+                    <TextField
+                        value={titleInput}
+                        onChange={handleInputChange}
+                        onBlur={handleInputOff}
+                        size='small'
+                        variant='standard'
+                        autoFocus
+                    />
+                </Box> :
+                <>
+                    <Link
+                        to={`/${nodeId}`}
+                        onClick={handleSelectionClick}
+                        onDoubleClick={handleInputOn}
+                        style={{ flexGrow: 1, py: 2, display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none', userSelect: 'none' }}
+                    >
+                        <Box component={labelIcon} sx={{ mr: 1, height: 60 }} />
+                        <Typography variant="body1" >
+                            {label}
+                        </Typography>
+                    </Link>
+
+
+                </>
+            }
+
+            {mouse && !isTitleInput && (
+                <Box sx={{ display: 'flex', flexDirection: 'row' }} >
                     {nodeId !== '1' && nodeId !== 'tasks' ? (<IconButton size="small" onClick={deletePaper} >
                         <DeleteIcon />
                     </IconButton>) : null}
