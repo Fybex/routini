@@ -50,7 +50,6 @@ export default function BubbleMenuComponent({ editor, visible }) {
                 >
                     <StyledToggleButtonGroup
                         size="small"
-                        sx={{ backgroundColor: 'white' }}
                     >
                         <ToggleButton value="bold" selected={editor.isActive('bold')} aria-label="bold" onClick={() => editor.chain().focus().toggleBold().run()}>
                             <FormatBoldIcon />
@@ -68,7 +67,6 @@ export default function BubbleMenuComponent({ editor, visible }) {
                     <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
                     <StyledToggleButtonGroup
                         size="small"
-                        sx={{ backgroundColor: 'white' }}
                     >
                         <ToggleButton value="h1" selected={editor.isActive('heading', { level: 1 })} onClick={() => editor.isActive('heading', { level: 1 }) ? editor.chain().focus().setParagraph().run() : editor.chain().focus().setHeading({ level: 1 }).run()}>
                             <Typography fontWeight="bold" >H1</Typography>
@@ -80,7 +78,6 @@ export default function BubbleMenuComponent({ editor, visible }) {
                     <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
                     <StyledToggleButtonGroup
                         size="small"
-                        sx={{ backgroundColor: 'white' }}
                     >
                         <ToggleButton value="bulletList" selected={editor.isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()}>
                             <FormatListBulletedIcon />
@@ -95,7 +92,6 @@ export default function BubbleMenuComponent({ editor, visible }) {
                     <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
                     <StyledToggleButtonGroup
                         size="small"
-                        sx={{ backgroundColor: 'white' }}
                     >
                         <ToggleButton value="left" selected={editor.isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()}>
                             <FormatAlignLeftIcon />
