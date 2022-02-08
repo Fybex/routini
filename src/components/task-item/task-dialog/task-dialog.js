@@ -44,7 +44,8 @@ export default function TaskDialog({
     onClose,
     taskInfo,
     onUpdateTask,
-    onDeleteTask
+    onDeleteTask,
+    openInFile = false
 }) {
 
     const [localTask, setLocalTask] = useState(taskInfo)
@@ -238,7 +239,10 @@ export default function TaskDialog({
                                     <IconButton onClick={onDeleteTaskDialogToggle}>
                                         <DeleteIcon />
                                     </IconButton>
-                                    : null}
+                                    : openInFile ? 
+                                <IconButton onClick={onDeleteTaskDialogToggle}>
+                                    <DeleteIcon />
+                                </IconButton> : null}
                             </Box>
                         </Box>
                     </DialogTitle>

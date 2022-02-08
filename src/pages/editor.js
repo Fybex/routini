@@ -45,6 +45,9 @@ const Editor = ({ getActiveFile, onUpdateNote, open, drawerWidth, onUpdateTask, 
             Underline,
             taskItem.configure({
                 tasks: tasks,
+                onUpdateTask: onUpdateTask,
+                onDeleteTask: onDeleteTask,
+                fileId: getActiveFile.id
             }),
             Image,
             Placeholder.configure({
@@ -95,18 +98,19 @@ const Editor = ({ getActiveFile, onUpdateNote, open, drawerWidth, onUpdateTask, 
 
     const [lastTask, setLastTask] = useState();
 
-    useEffect(() => {
-        if (editor && lastTask !== editor.storage.taskItem.object) {
-            if (editor.storage.taskItem.object.delete) {
-                onDeleteTask({ ...editor.storage.taskItem.object, fileId: getActiveFile.id })
-            } else {
-                onUpdateTask({ ...editor.storage.taskItem.object, fileId: getActiveFile.id })
-            }
+    // useEffect(() => {
+    //     console.log('onUpdateTask')
+    //     if (editor && lastTask !== editor.storage.taskItem.object) {
+    //         if (editor.storage.taskItem.object.delete) {
+    //             onDeleteTask({ ...editor.storage.taskItem.object, fileId: getActiveFile.id })
+    //         } else {
+    //             onUpdateTask({ ...editor.storage.taskItem.object, fileId: getActiveFile.id })
+    //         }
 
-            setLastTask(editor.storage.taskItem.object)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [editor, lastTask, onUpdateTask])
+    //         setLastTask(editor.storage.taskItem.object)
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [editor, lastTask, onUpdateTask])
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value)
