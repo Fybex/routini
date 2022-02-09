@@ -1,3 +1,4 @@
+import React from 'react'
 import { getAuth, onAuthStateChanged } from '@firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from '@firebase/firestore'
