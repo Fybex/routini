@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/routini/static/css/main.30bdab1a.css",
-    "main.js": "/routini/static/js/main.7ce7c086.js",
+    "main.js": "/routini/static/js/main.ed2d501b.js",
     "index.html": "/routini/index.html",
     "main.30bdab1a.css.map": "/routini/static/css/main.30bdab1a.css.map",
-    "main.7ce7c086.js.map": "/routini/static/js/main.7ce7c086.js.map"
+    "main.ed2d501b.js.map": "/routini/static/js/main.ed2d501b.js.map"
   },
   "entrypoints": [
     "static/css/main.30bdab1a.css",
-    "static/js/main.7ce7c086.js"
+    "static/js/main.ed2d501b.js"
   ]
 }
