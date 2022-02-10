@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, createContext } from 'react'
 import { Box } from '@mui/system'
 import ContentEditable from 'react-contenteditable'
 import { useEditor, EditorContent } from '@tiptap/react'
@@ -19,6 +19,8 @@ import renderItems from '../components/extensions/commands/render-items'
 import Image from '@tiptap/extension-image'
 
 import '../styles/style.css'
+
+export const TasksContext = createContext()
 
 const Editor = ({ getActiveFile, onUpdateNote, open, drawerWidth, onUpdateTask, onDeleteTask, saveData, tasks }) => {
 
@@ -155,7 +157,9 @@ const Editor = ({ getActiveFile, onUpdateNote, open, drawerWidth, onUpdateTask, 
 
     return (
         <>
-            {check}
+            <TasksContext.Provider value={tasks}>
+                {check}
+            </TasksContext.Provider>
         </>
     )
 }

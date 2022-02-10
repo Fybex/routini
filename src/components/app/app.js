@@ -56,10 +56,6 @@ export default function App() {
         [],
     )
 
-    useEffect(() => {
-
-    }, [])
-
     const theme = useMemo(
         () =>
             createTheme({

@@ -27,7 +27,7 @@ export default function Main({ showEditor = false, showTasks = false, showSettin
     const getDocument = async () => {
         const docSnap = await getDoc(doc(db, `users/${user.uid}`))
         if (docSnap.exists()) {
-            console.log("Document data:", JSON.parse(docSnap.data().papers));
+            console.log("Document data:", JSON.parse(docSnap.data().papers), JSON.parse(docSnap.data().tasks));
             setPaper(JSON.parse(docSnap.data().papers))
             setTasks(JSON.parse(docSnap.data().tasks))
         } else {
@@ -39,7 +39,7 @@ export default function Main({ showEditor = false, showTasks = false, showSettin
 
     useEffect(() => {
         getDocument()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const [open, setOpen] = useState(localStorage.open ? JSON.parse(localStorage.open) : true);
@@ -230,29 +230,29 @@ export default function Main({ showEditor = false, showTasks = false, showSettin
         if (dataGetted) {
             saveData()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [papers, tasks])
 
     const handleSaveNotificationClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
-          }
-      
+        }
+
         setSaveNotification(false);
     }
 
     const action = (
         <>
-          <IconButton
-            size="small"
-            aria-label="close"
-            color="inherit"
-            onClick={handleSaveNotificationClose}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleSaveNotificationClose}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
         </>
-      );
+    )
 
     return (
         <>

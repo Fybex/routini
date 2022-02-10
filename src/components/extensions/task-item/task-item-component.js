@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { NodeViewWrapper, NodeViewContent } from '@tiptap/react'
 import Checkbox from '@mui/material/Checkbox'
 import Typography from '@mui/material/Typography'
@@ -14,15 +14,17 @@ import PriorityColor from '../../../utils/index-to-prioritycolor'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import IconButton from '@mui/material/IconButton'
 import TaskDialog from '../../task-item/task-dialog/task-dialog'
+import { TasksContext } from '../../../pages/editor'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default props => {
+  const tasks = useContext(TasksContext)
 
   const [showedDate, setShowedDate] = useState()
   const [taskInfo, setTaskInfo] = useState(
-    props.extension.options.tasks.filter((task) => task.id === props.node.attrs.id).length > 0
+    tasks.filter((task) => task.id === props.node.attrs.id).length > 0
       ?
-      props.extension.options.tasks.filter((task) => task.id === props.node.attrs.id)[0]
+      tasks.filter((task) => task.id === props.node.attrs.id)[0]
       :
       {
         checkbox: false,
@@ -35,6 +37,9 @@ export default props => {
         fileId: props.extension.options.fileId
       }
   )
+
+
+  console.log(props.extension.options.tasks, taskInfo, )
 
   const [dialogTaskOpen, setDialogTaskOpen] = useState(false)
 

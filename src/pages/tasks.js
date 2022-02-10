@@ -19,8 +19,6 @@ export default function Tasks({
     getFileId,
     setActiveFile
 }) {
-    const theme = useTheme()
-
     const handleAddTask = () => {
         onUpdateTask({
             checkbox: false,
